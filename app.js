@@ -1,17 +1,29 @@
 const express= require('express');
+const mongoose= require('mongoose');
+
 const pageRoute= require('./routes/pageRoute');
+const updateRoute= require('./routes/updateRoute');
+//npm init, express, nodemon(package)
+
+
+
 const app= express();
 
-//npm init, express, nodemon(package)
+mongoose.connect('mongodb://localhost/my_database').then(()=> {
+    console.log('DB baglandi');
+});
 
 //Template Engine
 app.set("view engine", "ejs");
 
 //Middlewares
 app.use(express.static("public"));
+app.use(express.json())
+app.use(express.urlencoded({extended:true}))
 
 //Routes
 app.use('/' , pageRoute);
+app.use('/update' , updateRoute);
 
 
 const port= 3000;
