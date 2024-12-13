@@ -1,0 +1,21 @@
+{
+  "name": "kdsprojesi",
+  "version": "1.0.0",
+  "description": "kds",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app.js"
+  },
+  "keywords": [
+    "kds"
+  ],
+  "author": "Abdurrahman Demir",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^4.21.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.7"
+  }
+}
