@@ -4,7 +4,7 @@ const pageController= require('../controllers/pageController');
 
 const router= express.Router();
 
-router.route('/index.html').get(pageController.getIndexPage);
+router.route('/index').get(pageController.getIndexPage);
 router.route('/login').get(pageController.getLoginPage);
-
+router.route('/register').get(pageController.getRegisterPage);
 module.exports= router;

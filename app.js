@@ -3,6 +3,7 @@ const mongoose= require('mongoose');
 
 const pageRoute= require('./routes/pageRoute');
 const updateRoute= require('./routes/updateRoute');
+const userRoute= require('./routes/userRoute');
 //npm init, express, nodemon(package)
 
 
@@ -24,6 +25,7 @@ app.use(express.urlencoded({extended:true}))
 //Routes
 app.use('/' , pageRoute);
 app.use('/update' , updateRoute);
+app.use('/user' , userRoute);
 
 
 const port= 3000;
