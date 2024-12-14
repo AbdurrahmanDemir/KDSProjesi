@@ -25,7 +25,7 @@ app.use(express.urlencoded({extended:true}))
 //Routes
 app.use('/' , pageRoute);
 app.use('/update' , updateRoute);
-app.use('/user' , userRoute);
+app.use('/users' , userRoute);
 
 
 const port= 3000;
