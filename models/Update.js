@@ -20,6 +20,11 @@ const UpdateSchema= new Schema({
         type: Date,
         default: Date.now,
     },
+    day1Retention: { type: Number, required: true },
+    day7Retention: { type: Number, required: true },
+    day30Retention: { type: Number, required: true },
+    purchases: { type: Number, required: true },
+    averageScreenTime: { type: Number, required: true },
     numberOfTesters: {
         type: Number,
         default: 1000,

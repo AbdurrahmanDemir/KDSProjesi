@@ -54,3 +54,7 @@
         });
     }
  };
+
+ exports.getNewUpdatePage= (req, res)=>{
+    res.status(200).render('newupdate');
+};

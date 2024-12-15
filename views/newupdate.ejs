@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yeni Güncelleme</title>
+</head>
+<body>
+    <h1>Yeni Güncelleme Ekle</h1>
+    <form method="POST" action="/update">
+        <label for="name">Update Name:</label>
+        <input type="text" id="name" name="name" required><br>
+
+        <label for="description">Update Description:</label>
+        <textarea id="description" name="description" required></textarea><br>
+
+        <label for="version">Version:</label>
+        <input type="text" id="version" name="version" required><br>
+
+        <label for="numberOfTesters">Number of Testers:</label>
+        <input type="number" id="numberOfTesters" name="numberOfTesters" required><br>
+
+        <label for="day1Retention">Day 1 Retention (%):</label>
+        <input type="number" id="day1Retention" name="day1Retention" required><br>
+
+        <label for="day7Retention">Day 7 Retention (%):</label>
+        <input type="number" id="day7Retention" name="day7Retention" required><br>
+
+        <label for="day30Retention">Day 30 Retention (%):</label>
+        <input type="number" id="day30Retention" name="day30Retention" required><br>
+
+        <label for="purchases">Purchases:</label>
+        <input type="number" id="purchases" name="purchases" required><br>
+
+        <label for="averageScreenTime">Average Screen Time (minutes):</label>
+        <input type="number" id="averageScreenTime" name="averageScreenTime" required><br>
+
+        <button type="submit">Kaydet</button>
+    </form>
+</body>
+</html>

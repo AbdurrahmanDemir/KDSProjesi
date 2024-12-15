@@ -9,3 +9,6 @@ exports.getLoginPage= (req, res)=>{
 exports.getRegisterPage= (req, res)=>{
     res.status(200).render('register');
 };
+exports.getNewUpdatePage= (req, res)=>{
+    res.status(200).render('newupdate');
+};
