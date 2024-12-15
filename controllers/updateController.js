@@ -6,10 +6,8 @@
     try{
     const update= await Update.create(req.body);
     
-        res.status(201).json({
-            status: 'success',
-            update,
-        });
+    res.status(200).redirect('/users/index');
+    
     }catch(error){
         res.status(400).json({
             status: 'fail',

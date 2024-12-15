@@ -27,6 +27,7 @@
                                             <th>Version Number</th>
                                             <th>Date</th>
                                             <th>Number of Testers</th>
+                                            <th>Description</th>
                                             <th>Button</th>
                                             <th></th>
                                         </tr>
@@ -38,6 +39,7 @@
                                             <td><%= updates[i].version %></td>
                                             <td><%= updates[i].createdAt %></td>
                                             <td><%= updates[i].numberOfTesters %></td>
+                                            <td><%= updates[i].description %></td>
                                             <td>
                                                 <a href="/update/<%= updates[i].slug %>" class="btn btn-primary">View</a>
                                             </td>
