@@ -1,41 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yeni Güncelleme</title>
-</head>
+<%- include('partials/_header'); %>
 <body>
-    <h1>Yeni Güncelleme Ekle</h1>
-    <form method="POST" action="/update">
+    <form method="POST" action="/update" style="display: flex; flex-direction: column; gap: 15px; width: 100%; max-width: 400px; margin: auto;">
+        <h1 style="text-align: center;">Yeni Güncelleme Ekle</h1>
         <label for="name">Update Name:</label>
-        <input type="text" id="name" name="name" required><br>
+        <input type="text" id="name" name="name" required>
 
         <label for="description">Update Description:</label>
-        <textarea id="description" name="description" required></textarea><br>
+        <textarea id="description" name="description" required></textarea>
 
         <label for="version">Version:</label>
-        <input type="text" id="version" name="version" required><br>
+        <input type="text" id="version" name="version" required>
 
         <label for="numberOfTesters">Number of Testers:</label>
-        <input type="number" id="numberOfTesters" name="numberOfTesters" required><br>
+        <input type="number" id="numberOfTesters" name="numberOfTesters" required>
 
         <label for="day1Retention">Day 1 Retention (%):</label>
-        <input type="number" id="day1Retention" name="day1Retention" required><br>
+        <input type="number" id="day1Retention" name="day1Retention" required>
 
         <label for="day7Retention">Day 7 Retention (%):</label>
-        <input type="number" id="day7Retention" name="day7Retention" required><br>
+        <input type="number" id="day7Retention" name="day7Retention" required>
 
         <label for="day30Retention">Day 30 Retention (%):</label>
-        <input type="number" id="day30Retention" name="day30Retention" required><br>
+        <input type="number" id="day30Retention" name="day30Retention" required>
 
-        <label for="purchases">Purchases:</label>
-        <input type="number" id="purchases" name="purchases" required><br>
+        <label for="purchasesDay1">Purchases Day 1:</label>
+        <input type="number" id="purchasesDay1" name="purchasesDay1" required>
 
-        <label for="averageScreenTime">Average Screen Time (minutes):</label>
-        <input type="number" id="averageScreenTime" name="averageScreenTime" required><br>
+        <label for="purchasesDay7">Purchases Day 7:</label>
+        <input type="number" id="purchasesDay7" name="purchasesDay7" required>
 
-        <button type="submit">Kaydet</button>
+        <label for="purchasesDay30">Purchases Day 30:</label>
+        <input type="number" id="purchasesDay30" name="purchasesDay30" required>
+
+        <label for="averageScreenTimeDay1">Average Screen Time Day 1 (minutes):</label>
+        <input type="number" id="averageScreenTimeDay1" name="averageScreenTimeDay1" required>
+
+        <label for="averageScreenTimeDay7">Average Screen Time Day 7 (minutes):</label>
+        <input type="number" id="averageScreenTimeDay7" name="averageScreenTimeDay7" required>
+
+        <label for="averageScreenTimeDay30">Average Screen Time Day 30 (minutes):</label>
+        <input type="number" id="averageScreenTimeDay30" name="averageScreenTimeDay30" required>
+
+        <button type="submit" style="padding: 10px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer;">Kaydet</button>
     </form>
 </body>
 </html>
