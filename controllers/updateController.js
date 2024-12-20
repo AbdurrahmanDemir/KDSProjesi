@@ -1,5 +1,4 @@
  const Update= require('../models/Update');
-
  exports.createUpdate= async (req, res) => {
 
 
@@ -15,9 +14,7 @@
             
         });
     }
-
  };
-
  exports.getAllUpdates= async (req, res) => {
 
 
@@ -52,7 +49,6 @@
         });
     }
  };
-
  exports.getNewUpdatePage= (req, res)=>{
     res.status(200).render('newupdate');
-};
+ };
