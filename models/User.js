@@ -18,13 +18,17 @@ const UserSchema = new Schema({
   }
 });
 
-UserSchema.pre('save', function (next){
-    const user = this;
-    bcrypt.hash(user.password, 10, (error, hash) => {
-        user.password = hash;
-        next();
-    })
-})
+UserSchema.pre('save', async function (next) {
+  const user = this;
+
+  if (!user.isModified('password')) {
+    return next(); // Şifre değiştirilmediyse tekrar hashleme yapılmaz
+  }
+
+  user.password = await bcrypt.hash(user.password, 10);
+  next();
+});
+
 
 const User = mongoose.model('User', UserSchema);
 module.exports = User;

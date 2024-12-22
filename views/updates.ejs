@@ -2,22 +2,21 @@
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4">Tables</h1>
+                        <h1 class="mt-4">ALL DATA</h1>
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-                            <li class="breadcrumb-item active">Tables</li>
+                            <li class="breadcrumb-item active">All updates</li>
                         </ol>
                         <div class="card mb-4">
                             <div class="card-body">
-                                DataTables is a third party plugin that is used to generate the demo table below. For more information about DataTables, please visit the
-                                <a target="_blank" href="https://datatables.net/">official DataTables documentation</a>
-                                .
+                                On this page, you can view all updates created by you. You can review the details of your updates, edit them, or add a new update. You can use charts and other metrics to analyze data that will help you achieve your goals.
+                                 .
                             </div>
                         </div>
                         <div class="card mb-4">
                             <div class="card-header">
                                 <i class="fas fa-table me-1"></i>
-                                DataTable Example
+                                Updates Table
                             </div>
                             <div class="card-body">
                                 <table id="datatablesSimple">
@@ -29,7 +28,6 @@
                                             <th>Number of Testers</th>
                                             <th>Description</th>
                                             <th>Button</th>
-                                            <th></th>
                                         </tr>
                                     </tfoot>
                                     <tbody>
@@ -43,7 +41,6 @@
                                             <td>
                                                 <a href="/update/<%= updates[i].slug %>" class="btn btn-primary">View</a>
                                             </td>
-                                            <td></td>
                                         </tr>
                                         <% } %>
                                     </tbody>
@@ -53,18 +50,7 @@
                         </div>
                     </div>
                 </main>
-                <footer class="py-4 bg-light mt-auto">
-                    <div class="container-fluid px-4">
-                        <div class="d-flex align-items-center justify-content-between small">
-                            <div class="text-muted">Copyright &copy; Your Website 2023</div>
-                            <div>
-                                <a href="#">Privacy Policy</a>
-                                &middot;
-                                <a href="#">Terms &amp; Conditions</a>
-                            </div>
-                        </div>
-                    </div>
-                </footer>
+                
             </div>
         </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>

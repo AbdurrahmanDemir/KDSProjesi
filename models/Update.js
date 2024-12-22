@@ -36,6 +36,10 @@ const UpdateSchema= new Schema({
     slug: {
         type: String,
         unique: true,
+    },
+    user: {
+        type:mongoose.Schema.Types.ObjectId,
+    ref:'user'
     }
 });
 
