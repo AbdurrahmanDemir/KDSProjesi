@@ -1,0 +1,261 @@
+<%- include('partials/_header'); %>
+
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    margin: 0;
+    padding: 0;
+  }
+
+  .container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 100px;
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  h1, h2 {
+    text-align: center;
+    color: #333;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  label {
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+
+  select, input[type="checkbox"] {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+  }
+
+  button {
+    padding: 10px 15px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #007BFF;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  button:hover {
+    background-color: #0056b3;
+  }
+
+  #charts {
+    margin-top: 30px;
+  }
+
+  #charts div {
+    margin-bottom: 20px;
+    padding: 10px;
+    background: #f9f9f9;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+  }
+
+  canvas {
+    max-width: 100%;
+  }
+</style>
+
+<div class="container">
+  <h1>Compare Updates</h1>
+
+  <form method="get" action="/users/analysis">
+    <label for="update1">Select Update 1:</label>
+    <select name="update1" id="update1" required>
+      <% if (updates && updates.length > 0) { %>
+        <% updates.forEach(update => { %>
+          <option value="<%= update._id %>"><%= update.name %> (Version <%= update.version %>)</option>
+        <% }) %>
+      <% } else { %>
+        <option value="">No updates available</option>
+      <% } %>
+    </select>
+
+    <label for="update2">Select Update 2:</label>
+    <select name="update2" id="update2" required>
+      <% if (updates && updates.length > 0) { %>
+        <% updates.forEach(update => { %>
+          <option value="<%= update._id %>"><%= update.name %> (Version <%= update.version %>)</option>
+        <% }) %>
+      <% } else { %>
+        <option value="">No updates available</option>
+      <% } %>
+    </select>
+
+    <fieldset>
+      <legend>Select Statistics to View:</legend>
+      <div>
+        <input type="checkbox" name="statistics" value="retention" id="retention">
+        <label for="retention">Retention</label>
+      </div>
+      <div>
+        <input type="checkbox" name="statistics" value="averageScreenTime" id="averageScreenTime">
+        <label for="averageScreenTime">Average Screen Time</label>
+      </div>
+      <div>
+        <input type="checkbox" name="statistics" value="purchases" id="purchases">
+        <label for="purchases">Purchases</label>
+      </div>
+      <div>
+        <input type="checkbox" name="statistics" value="numberOfTesters" id="numberOfTesters">
+        <label for="numberOfTesters">Number of Testers</label>
+      </div>
+    </fieldset>
+
+    <button type="submit">Compare</button>
+  </form>
+
+  <% if (selectedUpdates && selectedUpdates.length === 2 && statistics) { %>
+    <h2>Comparison Results</h2>
+
+    <div id="charts">
+      <% if (statistics.includes('retention')) { %>
+        <div>
+          <h3>Retention</h3>
+          <canvas id="retentionChart"></canvas>
+        </div>
+      <% } %>
+
+      <% if (statistics.includes('averageScreenTime')) { %>
+        <div>
+          <h3>Average Screen Time</h3>
+          <canvas id="screenTimeChart"></canvas>
+        </div>
+      <% } %>
+
+      <% if (statistics.includes('purchases')) { %>
+        <div>
+          <h3>Purchases</h3>
+          <canvas id="purchasesChart"></canvas>
+        </div>
+      <% } %>
+
+      <% if (statistics.includes('numberOfTesters')) { %>
+        <div>
+          <h3>Number of Testers</h3>
+          <canvas id="testersChart"></canvas>
+        </div>
+      <% } %>
+    </div>
+  <% } %>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  <% if (selectedUpdates && selectedUpdates.length === 2) { %>
+    const update1 = <%- JSON.stringify(selectedUpdates[0]) %>;
+    const update2 = <%- JSON.stringify(selectedUpdates[1]) %>;
+
+    const labels = ['Day 1', 'Day 7', 'Day 30'];
+
+    <% if (statistics && statistics.includes('retention')) { %>
+      // Retention Chart
+      new Chart(document.getElementById('retentionChart'), {
+        type: 'line',
+        data: {
+          labels,
+          datasets: [
+            {
+              label: update1.name,
+              data: [update1.day1Retention, update1.day7Retention, update1.day30Retention],
+              borderColor: 'blue',
+              fill: false,
+            },
+            {
+              label: update2.name,
+              data: [update2.day1Retention, update2.day7Retention, update2.day30Retention],
+              borderColor: 'red',
+              fill: false,
+            },
+          ],
+        },
+      });
+    <% } %>
+
+    <% if (statistics && statistics.includes('averageScreenTime')) { %>
+      // Average Screen Time Chart
+      new Chart(document.getElementById('screenTimeChart'), {
+        type: 'line',
+        data: {
+          labels,
+          datasets: [
+            {
+              label: update1.name,
+              data: [
+                update1.averageScreenTimeDay1,
+                update1.averageScreenTimeDay7,
+                update1.averageScreenTimeDay30,
+              ],
+              borderColor: 'blue',
+              fill: false,
+            },
+            {
+              label: update2.name,
+              data: [
+                update2.averageScreenTimeDay1,
+                update2.averageScreenTimeDay7,
+                update2.averageScreenTimeDay30,
+              ],
+              borderColor: 'red',
+              fill: false,
+            },
+          ],
+        },
+      });
+    <% } %>
+
+    <% if (statistics && statistics.includes('purchases')) { %>
+      // Purchases Chart
+      new Chart(document.getElementById('purchasesChart'), {
+        type: 'bar',
+        data: {
+          labels,
+          datasets: [
+            {
+              label: update1.name,
+              data: [update1.purchasesDay1, update1.purchasesDay7, update1.purchasesDay30],
+              backgroundColor: 'blue',
+            },
+            {
+              label: update2.name,
+              data: [update2.purchasesDay1, update2.purchasesDay7, update2.purchasesDay30],
+              backgroundColor: 'red',
+            },
+          ],
+        },
+      });
+    <% } %>
+
+    <% if (statistics && statistics.includes('numberOfTesters')) { %>
+      // Number of Testers Chart
+      new Chart(document.getElementById('testersChart'), {
+        type: 'bar',
+        data: {
+          labels: [update1.name, update2.name],
+          datasets: [
+            {
+              label: 'Number of Testers',
+              data: [update1.numberOfTesters, update2.numberOfTesters],
+              backgroundColor: ['blue', 'red'],
+            },
+          ],
+        },
+      });
+    <% } %>
+  <% } %>
+</script>

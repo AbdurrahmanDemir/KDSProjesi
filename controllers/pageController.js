@@ -13,3 +13,9 @@ exports.getRegisterPage= (req, res)=>{
 exports.getNewUpdatePage= (req, res)=>{
     res.status(200).render('newupdate');
 };
+exports.getAnalysisPage= (req, res)=>{
+    res.status(200).render('analysis');
+};
+exports.getTahminPage= (req, res)=>{
+    res.status(200).render('tahmin');
+};

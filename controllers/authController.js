@@ -122,3 +122,107 @@ exports.getDashboardPage = async (req, res) => {
   }
 };
 
+exports.getCompareUpdatesPage = async (req, res) => {
+  try {
+    // Tüm güncellemeleri alın
+    const updates = await Update.find({ user: req.session.userID });
+
+    // Seçili güncellemeleri kontrol edin
+    const { update1, update2, statistics } = req.query;
+
+    const selectedUpdates = update1 && update2
+      ? await Update.find({
+          _id: { $in: [update1, update2] },
+          user: req.session.userID,
+        })
+      : [];
+
+    // `statistics`'i array formatında kontrol edin
+    const selectedStatistics = Array.isArray(statistics) ? statistics : [statistics];
+
+    // EJS dosyasına gönderilecek veriler
+    res.status(200).render('analysis', {
+      updates, // Tüm güncellemeler
+      selectedUpdates, // Seçilen iki güncelleme
+      statistics: selectedStatistics, // Seçilen istatistikler
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+};
+
+exports.getTahminPage = async (req, res) => {
+  try {
+    // Kullanıcıya ait güncellemeleri al
+    const updates = await Update.find({ user: req.session.userID });
+
+    // updates değişkenini tahmin.ejs dosyasına gönderin
+    res.status(200).render('tahmin', { 
+      updates, 
+      tahminSonucu: null 
+    });
+  } catch (error) {
+    console.error('Error in getTahminPage:', error);
+    res.status(500).send('Internal Server Error');
+  }
+};
+
+
+exports.postTahmin = async (req, res) => {
+  try {
+    const { updateId, statistic } = req.body;
+
+    // Güncellemeyi al
+    const update = await Update.findById(updateId);
+
+    if (!update) {
+      return res.status(404).send('Update not found');
+    }
+
+    const data = {
+      retention: [update.day1Retention, update.day7Retention, update.day30Retention],
+      averageScreenTime: [
+        update.averageScreenTimeDay1,
+        update.averageScreenTimeDay7,
+        update.averageScreenTimeDay30,
+      ],
+      purchases: [update.purchasesDay1, update.purchasesDay7, update.purchasesDay30],
+    };
+
+    if (!data[statistic]) {
+      return res.status(400).send('Invalid statistic selected');
+    }
+
+    const selectedData = data[statistic];
+
+    // Basit bir tahminleme (lineer artış varsayımı)
+    const day60 = selectedData[2] + (selectedData[2] - selectedData[1]) * 2;
+    const day90 = day60 + (day60 - selectedData[2]) * 1.5;
+    const day180 = day90 + (day90 - day60) * 2;
+    const day360 = day180 + (day180 - day90) * 2;
+
+    res.status(200).render('tahmin', {
+      updates: await Update.find({ user: req.session.userID }),
+      tahminSonucu: {
+        statistic,
+        day1: selectedData[0],
+        day7: selectedData[1],
+        day30: selectedData[2],
+        day60,
+        day90,
+        day180,
+        day360,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+};
+
+
+
+
+
+

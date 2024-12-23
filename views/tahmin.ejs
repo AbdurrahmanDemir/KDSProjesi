@@ -1,0 +1,185 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<%- include('partials/_header'); %>
+
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    margin: 0;
+    padding: 0;
+  }
+
+  .container {
+    max-width: 800px;
+    margin: 120px auto;
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  h1 {
+    text-align: center;
+    color: #333;
+    font-size: 26px;
+    margin-bottom: 20px;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+
+  label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #555;
+  }
+
+  select, button {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%;
+  }
+
+  button {
+    background-color: #007BFF;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    border: none;
+  }
+
+  button:hover {
+    background-color: #0056b3;
+  }
+
+  .results {
+    margin-top: 30px;
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    text-align: center;
+  }
+
+  .results h2 {
+    color: #333;
+    font-size: 22px;
+    margin-bottom: 15px;
+  }
+
+  .results p {
+    font-size: 16px;
+    color: #444;
+    margin: 5px 0;
+  }
+
+  canvas {
+    max-width: 100%;
+    margin-top: 15px;
+  }
+</style>
+
+<div class="container">
+  <h1>Tahminleme</h1>
+
+  <form method="post" action="/users/tahmin">
+    <label for="update">Güncelleme Seç:</label>
+    <select name="updateId" id="update" required>
+      <% if (updates && updates.length > 0) { %>
+        <% updates.forEach(update => { %>
+          <option value="<%= update._id %>"><%= update.name %> (Version <%= update.version %>)</option>
+        <% }) %>
+      <% } else { %>
+        <option value="">Hiçbir güncelleme yok</option>
+      <% } %>
+    </select>
+
+    <label for="statistic">İstatistik Seç:</label>
+    <select name="statistic" id="statistic" required>
+      <option value="retention">Retention</option>
+      <option value="averageScreenTime">Average Screen Time</option>
+      <option value="purchases">Purchases</option>
+    </select>
+
+    <button type="submit">Tahminle</button>
+  </form>
+
+  <% if (tahminSonucu) { %>
+    <div class="results">
+      <h2>Tahmin Sonuçları</h2>
+      <p><strong>60. Gün Tahmini:</strong> <%= tahminSonucu.day60 %></p>
+      <p><strong>90. Gün Tahmini:</strong> <%= tahminSonucu.day90 %></p>
+      <p><strong>180. Gün Tahmini:</strong> <%= tahminSonucu.day180 %></p>
+      <p><strong>360. Gün Tahmini:</strong> <%= tahminSonucu.day360 %></p>
+      <canvas id="predictionChart" width="400" height="200"></canvas>
+    </div>
+  <% } %>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  <% if (tahminSonucu) { %>
+    const labels = ['Day 1', 'Day 7', 'Day 30', 'Day 60 (Predicted)', 'Day 90 (Predicted)', 'Day 180 (Predicted)', 'Day 360 (Predicted)'];
+    const actualData = [
+      <%= tahminSonucu.day1 %>, 
+      <%= tahminSonucu.day7 %>, 
+      <%= tahminSonucu.day30 %>
+    ];
+    const predictedData = [null, null, <%= tahminSonucu.day30 %>, <%= tahminSonucu.day60 %>, <%= tahminSonucu.day90 %>, <%= tahminSonucu.day180 %>, <%= tahminSonucu.day360 %>];
+
+    const ctx = document.getElementById('predictionChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [
+          {
+            label: 'Gerçek Değerler',
+            data: [...actualData, null, null, null, null],
+            borderColor: 'blue',
+            borderWidth: 2,
+            fill: false,
+          },
+          {
+            label: 'Tahmin Edilen Değerler',
+            data: predictedData,
+            borderColor: 'red',
+            borderWidth: 2,
+            borderDash: [5, 5],
+            fill: false,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            display: true,
+          },
+        },
+        scales: {
+          x: {
+            title: {
+              display: true,
+              text: 'Days',
+            },
+          },
+          y: {
+            title: {
+              display: true,
+              text: 'Values',
+            },
+          },
+        },
+      },
+    });
+  <% } %>
+</script>
